@@ -10,8 +10,10 @@
   publish = "dist/static"
 
 [build.environment]
-  # Vinext requires Node >= 22.13.
-  NODE_VERSION = "22.13.0"
+  # Vinext requires Node >= 22.13. Pin a newer 22.x whose bundled Corepack has
+  # up-to-date npm signing keys — Node 22.13's Corepack fails to verify the
+  # pnpm@11.25.0 signature ("Cannot find matching keyid") and aborts install.
+  NODE_VERSION = "22.22.2"
   # `next` is a dependency (Vinext resolves next/* imports), which makes Netlify
   # auto-install its Next.js runtime plugin. This site is prerendered to static
   # HTML and produces no `.next` output, so skip that plugin entirely.
