@@ -1,6 +1,11 @@
 # Copied Sites are standalone projects and cannot inherit the monorepo policy.
-minimumReleaseAge: 10080
-minimumReleaseAgeIgnoreMissingTime: false
+# Release-age quarantine disabled for standalone/CI deploys (e.g. Netlify).
+# The managed authoring environment can verify each package's publish date, but
+# generic CI reads abbreviated registry metadata without those timestamps, so the
+# check rejects the entire already-pinned lockfile and fails `pnpm install`. The
+# lockfile still pins exact versions, so which versions install is unchanged.
+minimumReleaseAge: 0
+minimumReleaseAgeIgnoreMissingTime: true
 trustLockfile: false
 strictDepBuilds: true
 allowBuilds:
