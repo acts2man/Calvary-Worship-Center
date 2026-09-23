@@ -1,0 +1,26 @@
+# Netlify configuration for Calvary Worship Center.
+#
+# This project is a Vinext (Vite) app that builds a Cloudflare Worker, not a
+# standard Next.js app, so Netlify's auto-detected Next.js runtime cannot build
+# it. Instead we build the site and prerender every route to static HTML
+# (`scripts/prerender-static.mjs`), then publish that as a plain static site.
+
+[build]
+  command = "npm run build:netlify"
+  publish = "dist/static"
+
+[build.environment]
+  # Vinext requires Node >= 22.13.
+  NODE_VERSION = "22.13.0"
+  # `next` is a dependency (Vinext resolves next/* imports), which makes Netlify
+  # auto-install its Next.js runtime plugin. This site is prerendered to static
+  # HTML and produces no `.next` output, so skip that plugin entirely.
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+# Long-cache the content-hashed client assets. Vinext also emits a `_headers`
+# file into the publish directory with the same rule; this keeps the intent
+# visible in config.
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
